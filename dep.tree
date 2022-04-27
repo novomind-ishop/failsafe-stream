@@ -1,0 +1,65 @@
+com.novomind.commons:commons-utilities:jar:master-SNAPSHOT
++- org.mockito:mockito-core:jar:4.3.1:test
+|  +- net.bytebuddy:byte-buddy:jar:1.12.7:test
+|  +- net.bytebuddy:byte-buddy-agent:jar:1.12.7:test
+|  \- org.objenesis:objenesis:jar:3.0.1:test
++- com.github.stefanbirkner:system-rules:jar:1.19.0:compile
++- javax.annotation:javax.annotation-api:jar:1.3.2:compile
++- org.glassfish.jaxb:jaxb-runtime:jar:2.3.0.1:compile
+|  +- org.glassfish.jaxb:jaxb-core:jar:2.3.0.1:compile
+|  |  +- javax.xml.bind:jaxb-api:jar:2.3.0:compile
+|  |  +- org.glassfish.jaxb:txw2:jar:2.3.0.1:compile
+|  |  \- com.sun.istack:istack-commons-runtime:jar:3.0.5:compile
+|  +- org.jvnet.staxex:stax-ex:jar:1.7.8:compile
+|  \- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.13:compile
++- javax.activation:activation:jar:1.1.1:compile
++- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+|  +- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+|  +- commons-logging:commons-logging:jar:99.0-does-not-exist:compile
+|  \- commons-codec:commons-codec:jar:1.13:compile
++- org.apache.commons:commons-lang3:jar:3.9:compile
++- com.github.dreamhead:moco-core:jar:0.12.0:test
+|  +- com.google.guava:guava:jar:28.0-jre:test
+|  |  +- com.google.guava:failureaccess:jar:1.0.1:test
+|  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:test
+|  |  +- org.checkerframework:checker-qual:jar:2.8.1:test
+|  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.2:test
+|  |  +- com.google.j2objc:j2objc-annotations:jar:1.3:test
+|  |  \- org.codehaus.mojo:animal-sniffer-annotations:jar:1.17:test
+|  +- io.netty:netty-codec-http:jar:4.1.19.Final:test
+|  |  \- io.netty:netty-codec:jar:4.1.19.Final:test
+|  +- io.netty:netty-handler:jar:4.1.19.Final:test
+|  |  +- io.netty:netty-buffer:jar:4.1.19.Final:test
+|  |  |  \- io.netty:netty-common:jar:4.1.19.Final:test
+|  |  \- io.netty:netty-transport:jar:4.1.19.Final:test
+|  |     \- io.netty:netty-resolver:jar:4.1.19.Final:test
+|  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.9.3:test
+|  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.9:test
+|  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.9:test
+|  +- com.jayway.jsonpath:json-path:jar:2.4.0:test
+|  |  \- net.minidev:json-smart:jar:2.3:test
+|  |     \- net.minidev:accessors-smart:jar:1.2:test
+|  |        \- org.ow2.asm:asm:jar:7.1:test
+|  +- org.freemarker:freemarker:jar:2.3.29:test
+|  \- org.slf4j:slf4j-api:jar:1.7.26:compile
++- com.netflix.hystrix:hystrix-core:jar:1.5.18:compile
+|  +- com.netflix.archaius:archaius-core:jar:0.4.1:compile
+|  |  \- commons-configuration:commons-configuration:jar:1.8:compile
+|  |     \- commons-lang:commons-lang:jar:2.6:compile
+|  \- org.hdrhistogram:HdrHistogram:jar:2.1.9:compile
++- io.reactivex:rxjava:jar:1.3.8:compile
++- mysql:mysql-connector-java:jar:8.0.22:compile
+|  \- com.google.protobuf:protobuf-java:jar:3.11.4:compile
++- com.github.javaparser:javaparser-core:jar:3.14.3:test
++- org.junit.vintage:junit-vintage-engine:jar:5.5.1:test
+|  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+|  +- org.junit.platform:junit-platform-engine:jar:1.5.1:test
+|  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+|  |  \- org.junit.platform:junit-platform-commons:jar:1.5.1:test
+|  \- junit:junit:jar:4.12:test
+|     \- org.hamcrest:hamcrest-core:jar:1.3:test
++- uk.co.jemos.podam:podam:jar:7.2.7.RELEASE:compile
+|  +- net.jcip:jcip-annotations:jar:1.0:compile
+|  \- javax.validation:validation-api:jar:2.0.1.Final:compile
++- org.projectlombok:lombok:jar:1.18.22:compile
+\- com.google.code.findbugs:jsr305:jar:3.0.2:compile
