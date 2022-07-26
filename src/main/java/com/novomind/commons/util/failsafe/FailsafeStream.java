@@ -4,11 +4,10 @@ import javax.annotation.Nonnull;
 
 import org.slf4j.Logger;
 
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public class FailsafeStream {
 
   @Nonnull
@@ -50,24 +49,25 @@ public class FailsafeStream {
     private Logger logger;
 
     @Nonnull
-    public <A, B, E extends Exception> FailsafeMap.Builder<A, B, E> forMap() {
+    private <A, B, E extends Exception> FailsafeMap.Builder<A, B, E> forMap() {
       return FailsafeMap.<A, B, E> builder()
           .useLogger(logger);
     }
 
     @Nonnull
-    public <E extends Exception, A> FailsafeSort.Builder<A, E> forSorted() {
+    private <E extends Exception, A> FailsafeSort.Builder<A, E> forSorted() {
       return FailsafeSort.<A, E> builder()
           .useLogger(logger);
     }
 
     @Nonnull
-    public <A, E extends Exception> FailsafeTest.Builder<A, E> forTest() {
+    private <A, E extends Exception> FailsafeTest.Builder<A, E> forTest() {
       return FailsafeTest.<A, E> builder()
           .useLogger(logger);
     }
 
-    public <E extends Exception, A> FailsafeAccept.Builder<A, E> forAccept() {
+    @Nonnull
+    private <E extends Exception, A> FailsafeAccept.Builder<A, E> forAccept() {
       return FailsafeAccept.<A, E> builder()
           .useLogger(logger);
     }

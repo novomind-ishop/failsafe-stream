@@ -25,6 +25,7 @@ abstract class FailsafeOperationBuilderWithLogger<O, T> {
   /**
    * This is a convenience method for {@code}{@link #build()}->{@link FailsafeOperation#create()}{@code}.
    */
+  @Nonnull
   public T perform() {
     if (getPerformingElement() == null) {
       throw new IllegalStateException("No performing operation set!");

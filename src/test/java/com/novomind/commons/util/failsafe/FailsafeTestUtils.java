@@ -1,11 +1,10 @@
 package com.novomind.commons.util.failsafe;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -16,32 +15,32 @@ import javax.annotation.Nonnull;
 
 import com.google.common.collect.Streams;
 
-public class AbstractFailsafeTest {
+public final class FailsafeTestUtils {
 
   @Nonnull
-  protected Stream<String> getStreamOf21ElementsFirstBunchExceptionLastBunch(
+  public static Stream<String> getStreamOf21ElementsFirstBunchExceptionLastBunch(
       @Nonnull final String expectedElementForException) {
-    final Collection<String> firstBunch = getFirstBunch();
-    final Collection<String> lastBunch = getLastBunch();
+    final Stream<String> firstBunch = getFirstBunch();
+    final Stream<String> lastBunch = getLastBunch();
     return Streams.concat(
-        firstBunch.stream(),
+        firstBunch,
         Stream.of(expectedElementForException),
-        lastBunch.stream()
+        lastBunch
     );
   }
 
   @Nonnull
-  protected Collection<String> getFirstBunch() {
-    return IntStream.rangeClosed(1, 10).mapToObj(Integer::toString).collect(Collectors.toList());
+  public static Stream<String> getFirstBunch() {
+    return IntStream.rangeClosed(1, 10).mapToObj(Integer::toString);
   }
 
   @Nonnull
-  protected List<String> getLastBunch() {
-    return IntStream.rangeClosed(11, 20).mapToObj(Integer::toString).collect(Collectors.toList());
+  public static Stream<String> getLastBunch() {
+    return IntStream.rangeClosed(11, 20).mapToObj(Integer::toString);
   }
 
   @Nonnull
-  protected String invokeForException(@Nonnull final String element, @Nonnull final String expectedElementForException)
+  public static String invokeForException(@Nonnull final String element, @Nonnull final String expectedElementForException)
       throws Exception {
     if (element.equals(expectedElementForException)) {
       throw new Exception("Expected exception thrown for " + expectedElementForException);
@@ -50,12 +49,13 @@ public class AbstractFailsafeTest {
     return element;
   }
 
-  protected void checkResultContainsExpectedElementsAndExceptionElementIsHandled(
+  public static void checkResultContainsExpectedElementsAndExceptionElementIsHandled(
       @Nonnull final List<String> result,
       @Nonnull final String expectedElementForException,
       @Nonnull final BiConsumer<String, Throwable> exceptionConsumerMock) {
-    assertTrue(result.containsAll(getFirstBunch()));
-    assertTrue(result.containsAll(getLastBunch()));
+    assertThat(result).containsAll(getFirstBunch().collect(Collectors.toList()));
+    assertThat(result).containsAll(getLastBunch().collect(Collectors.toList()));
+
     verify(exceptionConsumerMock).accept(eq(expectedElementForException), any(Exception.class));
   }
 }

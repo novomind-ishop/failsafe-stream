@@ -11,11 +11,12 @@ import org.slf4j.Logger;
 
 import com.novomind.commons.util.ThrowingFunction;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(setterPrefix = "use", builderClassName = "Builder")
 class FailsafeMap<A, B, E extends Exception> implements FailsafeOperation<Function<A, B>> {
 
@@ -35,10 +36,10 @@ class FailsafeMap<A, B, E extends Exception> implements FailsafeOperation<Functi
     if (mapper == null) {
       throw new IllegalStateException("The necessary method reference not set. Failsafe is not sufficiently initialized!");
     }
-    return internalCreateFunction(mapper, defaultValueSupplier, logger, exceptionConsumer);
+    return internalCreateApply(mapper, defaultValueSupplier, logger, exceptionConsumer);
   }
 
-  private static <A, B, E extends Exception> Function<A, B> internalCreateFunction(
+  private static <A, B, E extends Exception> Function<A, B> internalCreateApply(
       @NonNull final ThrowingFunction<A, B, E> function,
       @NonNull final Supplier<B> defaultValue,
       @Nullable final Logger logger,
@@ -72,7 +73,8 @@ class FailsafeMap<A, B, E extends Exception> implements FailsafeOperation<Functi
       return useMapper(mapper);
     }
 
-    public Builder<A, B, E> useDefaultValue(final B defaultValue) {
+    @Nonnull
+    public Builder<A, B, E> useDefaultValue(@Nullable final B defaultValue) {
       if (defaultValueSupplier$value != null) {
         throw new IllegalStateException("The defaultValueSupplier is already set.");
       }

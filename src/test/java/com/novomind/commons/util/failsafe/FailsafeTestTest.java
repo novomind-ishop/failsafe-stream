@@ -1,8 +1,9 @@
 package com.novomind.commons.util.failsafe;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.checkResultContainsExpectedElementsAndExceptionElementIsHandled;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.getStreamOf21ElementsFirstBunchExceptionLastBunch;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.invokeForException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -17,7 +18,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FailsafeTestTest extends AbstractFailsafeTest {
+public class FailsafeTestTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FailsafeTestTest.class);
 
@@ -45,9 +46,10 @@ public class FailsafeTestTest extends AbstractFailsafeTest {
         .collect(Collectors.toList());
 
     // Assert
-    assertThat(result.size(), is(21));
+    assertThat(result)
+        .hasSize(21);
 
-    assertTrue(result.contains(expectedElementForException));
+    assertThat(result).contains(expectedElementForException);
 
     checkResultContainsExpectedElementsAndExceptionElementIsHandled(result, expectedElementForException, exceptionConsumerMock);
   }
@@ -74,7 +76,7 @@ public class FailsafeTestTest extends AbstractFailsafeTest {
         .collect(Collectors.toList());
 
     // Assert
-    assertThat(result.size(), is(20));
+    assertThat(result).hasSize(20);
 
     checkResultContainsExpectedElementsAndExceptionElementIsHandled(result, expectedElementForException, exceptionConsumerMock);
   }
