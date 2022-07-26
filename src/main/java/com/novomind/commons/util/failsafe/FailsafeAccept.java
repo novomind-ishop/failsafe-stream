@@ -10,10 +10,11 @@ import org.slf4j.Logger;
 
 import com.novomind.commons.util.ThrowingConsumer;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(setterPrefix = "use", builderClassName = "Builder")
 class FailsafeAccept<A, E extends Exception> implements FailsafeOperation<Consumer<A>> {
 
@@ -21,20 +22,23 @@ class FailsafeAccept<A, E extends Exception> implements FailsafeOperation<Consum
   @lombok.Builder.Default
   private final BiConsumer<A, Throwable> exceptionConsumer = null;
   /**
-   * Is set internally prior to this builder.
+   * Is set internally prior to this builder.<br/>
+   * Actually not deprecated.
    */
   @Deprecated
   private final Logger logger;
 
   @Override
+  @Nonnull
   public Consumer<A> create() {
     if (consumer == null) {
       throw new IllegalStateException("The necessary method reference not set. Failsafe is not sufficiently initialized!");
     }
-    return internalCreateTest(consumer, logger, exceptionConsumer);
+    return internalCreateAccept(consumer, logger, exceptionConsumer);
   }
 
-  private static <A, E extends Exception> Consumer<A> internalCreateTest(
+  @Nonnull
+  private static <A, E extends Exception> Consumer<A> internalCreateAccept(
       @Nonnull final ThrowingConsumer<A, E> consumer,
       @Nullable final Logger logger,
       @Nullable final BiConsumer<A, Throwable> exceptionConsumer) {
@@ -52,14 +56,20 @@ class FailsafeAccept<A, E extends Exception> implements FailsafeOperation<Consum
     };
   }
 
+  /**
+   * Special lombok-Builder extension
+   * @param <A>
+   * @param <E>
+   */
   public static class Builder<A, E extends Exception> extends FailsafeOperationBuilderWithLogger<Builder<A, E>, Consumer<A>> {
 
     /**
      * This is a convenience method for {@link #useConsumer(ThrowingConsumer)}
      */
+    @Nonnull
     public Builder<A, E> consume(@Nonnull final ThrowingConsumer<A, E> consumer) {
       if (this.consumer != null) {
-        throw new IllegalStateException("The predicate is already set.");
+        throw new IllegalStateException("The consumer is already set.");
       }
       return useConsumer(consumer);
     }

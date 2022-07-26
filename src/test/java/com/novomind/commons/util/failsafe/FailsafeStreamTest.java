@@ -1,13 +1,10 @@
 package com.novomind.commons.util.failsafe;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.lang.reflect.Field;
 
-import org.hamcrest.core.StringContains;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +17,14 @@ public class FailsafeStreamTest {
   public void failsafe_withLogger() throws NoSuchFieldException, IllegalAccessException {
     // Act
     final FailsafeStream.Failsafe.Builder failsafeBuilder = FailsafeStream.failsafe();
+    assertThat(failsafeBuilder).isNotNull();
+
     final FailsafeStream.Failsafe failsafe = failsafeBuilder
         .logger(LOGGER)
         .build();
 
     // Assert
-    assertNotNull(failsafeBuilder);
-    assertNotNull(failsafe);
+    assertThat(failsafe).isNotNull();
 
     checkLoggerSetWithValue(failsafe, LOGGER);
   }
@@ -35,33 +33,29 @@ public class FailsafeStreamTest {
   public void failsafe_withoutLogger() throws NoSuchFieldException, IllegalAccessException {
     // Act
     final FailsafeStream.Failsafe.Builder failsafeBuilder = FailsafeStream.failsafe();
+    assertThat(failsafeBuilder).isNotNull();
+
     final FailsafeStream.Failsafe failsafe = failsafeBuilder
         .build();
 
     // Assert
-    assertNotNull(failsafeBuilder);
-    assertNotNull(failsafe);
+    assertThat(failsafe).isNotNull();
 
     checkLoggerSetWithValue(failsafe, null);
   }
 
   @Test
   public void failsafeForMap_noPerformingMethodSet_fails() {
-    // Act
     final FailsafeMap.Builder<String, String, Exception> failsafeBuilder = FailsafeStream.failsafeForMap(LOGGER);
+    assertThat(failsafeBuilder).isNotNull();
 
-    IllegalStateException expectedException;
-    try {
-      failsafeBuilder.build().create();
-      fail("Expected exception to be thrown here, since the performing method reference was not set!");
-      expectedException = null;
-    } catch (final IllegalStateException exception) {
-      expectedException = exception;
-    }
-    // Assert
-    assertNotNull(failsafeBuilder);
-    assertThat(expectedException.getMessage(), StringContains.containsString("method reference not set"));
-    assertThat(expectedException.getMessage(), StringContains.containsString("not sufficiently initialized"));
+    // Act & Assert
+    assertThatThrownBy(() -> failsafeBuilder.build().create())
+        .withFailMessage("Expected exception to be thrown here, since the performing method reference was not set!")
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("method reference not set")
+        .hasMessageContaining("not sufficiently initialized");
+
   }
 
   @Test
@@ -76,7 +70,7 @@ public class FailsafeStreamTest {
         .build();
 
     // Assert
-    assertNotNull(failsafeMap);
+    assertThat(failsafeMap).isNotNull();
     checkLoggerSetWithValue(failsafeMap, LOGGER);
   }
 
@@ -92,27 +86,21 @@ public class FailsafeStreamTest {
         .build();
 
     // Assert
-    assertNotNull(failsafeSort);
+    assertThat(failsafeSort).isNotNull();
     checkLoggerSetWithValue(failsafeSort, LOGGER);
   }
 
   @Test
   public void failsafeForSorted_noPerformingMethodSet_fails() {
-    // Act
     final FailsafeSort.Builder<String, Exception> failsafeBuilder = FailsafeStream.failsafeForSorted(LOGGER);
+    assertThat(failsafeBuilder).isNotNull();
 
-    IllegalStateException expectedException;
-    try {
-      failsafeBuilder.build().create();
-      fail("Expected exception to be thrown here, since the performing method reference was not set!");
-      expectedException = null;
-    } catch (final IllegalStateException exception) {
-      expectedException = exception;
-    }
-    // Assert
-    assertNotNull(failsafeBuilder);
-    assertThat(expectedException.getMessage(), StringContains.containsString("method reference not set"));
-    assertThat(expectedException.getMessage(), StringContains.containsString("not sufficiently initialized"));
+    // Act & Assert
+    assertThatThrownBy(() -> failsafeBuilder.build().create())
+        .withFailMessage("Expected exception to be thrown here, since the performing method reference was not set!")
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("method reference not set")
+        .hasMessageContaining("not sufficiently initialized");
   }
 
   @Test
@@ -127,27 +115,46 @@ public class FailsafeStreamTest {
         .build();
 
     // Assert
-    assertNotNull(failsafeTest);
+    assertThat(failsafeTest).isNotNull();
     checkLoggerSetWithValue(failsafeTest, LOGGER);
   }
 
   @Test
   public void failsafeForTest_noPerformingMethodSet_fails() {
-    // Act
     final FailsafeTest.Builder<String, Exception> failsafeBuilder = FailsafeStream.failsafeForTest(LOGGER);
+    assertThat(failsafeBuilder).isNotNull();
 
-    IllegalStateException expectedException;
-    try {
-      failsafeBuilder.build().create();
-      fail("Expected exception to be thrown here, since the performing method reference was not set!");
-      expectedException = null;
-    } catch (final IllegalStateException exception) {
-      expectedException = exception;
-    }
+    // Act & Assert
+    assertThatThrownBy(() -> failsafeBuilder.build().create())
+        .withFailMessage("Expected exception to be thrown here, since the performing method reference was not set!")
+        .hasMessageContaining("method reference not set")
+        .hasMessageContaining("not sufficiently initialized");
+  }
+  @Test
+  public void failsafeForAccept() throws NoSuchFieldException, IllegalAccessException {
+    // Act
+    final FailsafeAccept.Builder<String, Exception> failsafeBuilder = FailsafeStream.failsafeForAccept(LOGGER);
+
+    final FailsafeAccept<String, Exception> failsafeAccept = failsafeBuilder
+        .useExceptionConsumer((value, exception) -> {
+        })
+        .build();
+
     // Assert
-    assertNotNull(failsafeBuilder);
-    assertThat(expectedException.getMessage(), StringContains.containsString("method reference not set"));
-    assertThat(expectedException.getMessage(), StringContains.containsString("not sufficiently initialized"));
+    assertThat(failsafeAccept).isNotNull();
+    checkLoggerSetWithValue(failsafeAccept, LOGGER);
+  }
+
+  @Test
+  public void failsafeForAccept_noPerformingMethodSet_fails() {
+    final FailsafeAccept.Builder<String, Exception> failsafeBuilder = FailsafeStream.failsafeForAccept(LOGGER);
+    assertThat(failsafeBuilder).isNotNull();
+
+    // Act & Assert
+    assertThatThrownBy(() -> failsafeBuilder.build().create())
+        .withFailMessage("Expected exception to be thrown here, since the performing method reference was not set!")
+        .hasMessageContaining("method reference not set")
+        .hasMessageContaining("not sufficiently initialized");
   }
 
   private void checkLoggerSetWithValue(final Object failsafe, final Logger expectedLoggerValue)
@@ -155,7 +162,7 @@ public class FailsafeStreamTest {
     final Field loggerField = failsafe.getClass().getDeclaredField("logger");
     loggerField.setAccessible(true);
     final Logger actualLogger = (Logger) loggerField.get(failsafe);
-    assertEquals(expectedLoggerValue, actualLogger);
+    assertThat(expectedLoggerValue).isEqualTo(actualLogger);
   }
 
 }

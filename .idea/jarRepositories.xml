@@ -12,6 +12,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://jpartner-nexus-ishop.novomind.com/content/repositories/public" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="ishop-all" />
       <option name="name" value="ishop-all" />
       <option name="url" value="http://nexus-ishop.novomind.com:8881/nexus/content/repositories/public" />

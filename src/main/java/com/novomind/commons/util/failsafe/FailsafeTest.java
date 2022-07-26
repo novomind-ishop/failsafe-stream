@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 
 import com.novomind.commons.util.ThrowingPredicate;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(setterPrefix = "use", builderClassName = "Builder")
 class FailsafeTest<A, E extends Exception> implements FailsafeOperation<Predicate<A>> {
 
@@ -30,6 +31,7 @@ class FailsafeTest<A, E extends Exception> implements FailsafeOperation<Predicat
   private final Logger logger;
 
   @Override
+  @Nonnull
   public Predicate<A> create() {
     if (predicate == null) {
       throw new IllegalStateException("The necessary method reference not set. Failsafe is not sufficiently initialized!");
@@ -37,6 +39,7 @@ class FailsafeTest<A, E extends Exception> implements FailsafeOperation<Predicat
     return internalCreateTest(predicate, defaultValueSupplier, logger, exceptionConsumer);
   }
 
+  @Nonnull
   private static <A, E extends Exception> Predicate<A> internalCreateTest(
       @Nonnull final ThrowingPredicate<A, E> predicate,
       @Nonnull final BooleanSupplier defaultValue,
@@ -62,6 +65,7 @@ class FailsafeTest<A, E extends Exception> implements FailsafeOperation<Predicat
     /**
      * This is a convenience method for {@link #usePredicate(ThrowingPredicate)}
      */
+    @Nonnull
     public Builder<A, E> filter(@Nonnull final ThrowingPredicate<A, E> predicate) {
       if (this.predicate != null) {
         throw new IllegalStateException("The predicate is already set.");
@@ -69,6 +73,7 @@ class FailsafeTest<A, E extends Exception> implements FailsafeOperation<Predicat
       return usePredicate(predicate);
     }
 
+    @Nonnull
     public FailsafeTest.Builder<A, E> useDefaultValue(final boolean defaultValue) {
       if (defaultValueSupplier$value != null) {
         throw new IllegalStateException("The defaultValueSupplier is already set.");

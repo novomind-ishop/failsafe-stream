@@ -1,9 +1,10 @@
 package com.novomind.commons.util.failsafe;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.getFirstBunch;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.getLastBunch;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.getStreamOf21ElementsFirstBunchExceptionLastBunch;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.invokeForException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
@@ -27,7 +28,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.novomind.commons.util.TriConsumer;
 
-public class FailsafeSortedTest extends AbstractFailsafeTest {
+public class FailsafeSortedTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FailsafeSortedTest.class);
 
@@ -59,11 +60,12 @@ public class FailsafeSortedTest extends AbstractFailsafeTest {
         .collect(Collectors.toList());
 
     // Assert
-    assertThat(result.size(), is(21));
+    assertThat(result)
+        .hasSize(21);
 
-    assertTrue(result.containsAll(getFirstBunch()));
-    assertTrue(result.contains(expectedElementForException));
-    assertTrue(result.containsAll(getLastBunch()));
+    assertThat(result).containsAll(getFirstBunch().collect(Collectors.toList()));
+    assertThat(result).contains(expectedElementForException);
+    assertThat(result).containsAll(getLastBunch().collect(Collectors.toList()));
 
     // re-combinations over all elements
     final ArgumentCaptor<String> secondElementCaptor = ArgumentCaptor.forClass(String.class);
@@ -72,8 +74,8 @@ public class FailsafeSortedTest extends AbstractFailsafeTest {
 
     final List<String> allValues = secondElementCaptor.getAllValues();
     final Collection<String> actualElements = effectiveRecombination.get(expectedElementForException);
-    assertEquals(allValues.size(), actualElements.size());
-    assertTrue(allValues.containsAll(actualElements));
+    assertThat(allValues).hasSize(actualElements.size());
+    assertThat(allValues).containsAll(actualElements);
   }
 
   @Test
@@ -101,11 +103,11 @@ public class FailsafeSortedTest extends AbstractFailsafeTest {
         .collect(Collectors.toList());
 
     // Assert
-    assertThat(result.size(), is(21));
+    assertThat(result).hasSize(21);
 
-    assertTrue(result.containsAll(getFirstBunch()));
-    assertTrue(result.contains(expectedElementForException));
-    assertTrue(result.containsAll(getLastBunch()));
+    assertThat(result).containsAll(getFirstBunch().collect(Collectors.toList()));
+    assertThat(result).contains(expectedElementForException);
+    assertThat(result).containsAll(getLastBunch().collect(Collectors.toList()));
 
     // re-combinations over all elements
     final ArgumentCaptor<String> secondElementCaptor = ArgumentCaptor.forClass(String.class);
@@ -114,7 +116,8 @@ public class FailsafeSortedTest extends AbstractFailsafeTest {
 
     final List<String> allValues = secondElementCaptor.getAllValues();
     final Collection<String> actualElements = effectiveRecombination.get(expectedElementForException);
-    assertEquals(allValues.size(), actualElements.size());
-    assertTrue(allValues.containsAll(actualElements));
+    assertThat(allValues)
+        .hasSize(actualElements.size());
+    assertThat(allValues).containsAll(actualElements);
   }
 }

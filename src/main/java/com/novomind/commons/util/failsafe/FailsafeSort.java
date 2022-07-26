@@ -11,10 +11,11 @@ import org.slf4j.Logger;
 import com.novomind.commons.util.ThrowingComparator;
 import com.novomind.commons.util.TriConsumer;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(setterPrefix = "use", builderClassName = "Builder")
 class FailsafeSort<A, E extends Exception> implements FailsafeOperation<Comparator<A>> {
 
@@ -37,6 +38,7 @@ class FailsafeSort<A, E extends Exception> implements FailsafeOperation<Comparat
     return internalCreateSorted(comparator, defaultValueSupplier, logger, exceptionConsumer);
   }
 
+  @Nonnull
   private static <A, E extends Exception> Comparator<A> internalCreateSorted(
       @Nonnull final ThrowingComparator<A, E> comparator,
       @Nonnull final Supplier<Integer> defaultValue,
@@ -62,6 +64,7 @@ class FailsafeSort<A, E extends Exception> implements FailsafeOperation<Comparat
     /**
      * This is a convenience method for {@link #useComparator(ThrowingComparator)}
      */
+    @Nonnull
     public Builder<A, E> compare(@Nonnull final ThrowingComparator<A, E> comparator) {
       if (this.comparator != null) {
         throw new IllegalStateException("The comparator is already set.");
@@ -69,6 +72,7 @@ class FailsafeSort<A, E extends Exception> implements FailsafeOperation<Comparat
       return useComparator(comparator);
     }
 
+    @Nonnull
     public FailsafeSort.Builder<A, E> useDefaultValue(final int defaultValue) {
       if (defaultValueSupplier$value != null) {
         throw new IllegalStateException("The defaultValueSupplier is already set.");

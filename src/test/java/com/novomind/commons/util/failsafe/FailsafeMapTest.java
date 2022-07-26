@@ -1,8 +1,10 @@
 package com.novomind.commons.util.failsafe;
 
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.checkResultContainsExpectedElementsAndExceptionElementIsHandled;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.getStreamOf21ElementsFirstBunchExceptionLastBunch;
+import static com.novomind.commons.util.failsafe.FailsafeTestUtils.invokeForException;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -12,14 +14,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FailsafeMapTest extends AbstractFailsafeTest {
+public class FailsafeMapTest {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FailsafeMapTest.class);
 
@@ -38,8 +39,6 @@ public class FailsafeMapTest extends AbstractFailsafeTest {
         .useExceptionConsumer(exceptionConsumerMock)
         .useDefaultValueSupplier(expectedDefaultSupplierMock)
         .perform();
-
-    
 
     final Stream<String> streamWithExceptionProvoker =
         getStreamOf21ElementsFirstBunchExceptionLastBunch(expectedElementForException);
